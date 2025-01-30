@@ -1,65 +1,73 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+// Prisma client'ını kullanmak için gerekli olan yapılandırma. Prisma'nın JS client'ını kullanacağımızı belirtir.
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js"  // Prisma Client JS kullanacağız.
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgresql" 
   url      = env("DATABASE_URL")
 }
 
+// Account modeli, kullanıcıların hesap bilgilerini tutar.
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String  @map("user_id")
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
+  id                 String  @id @default(cuid())  // Her hesap için benzersiz bir ID oluşturulur.
+  userId             String  @map("user_id")  // Hesabın bağlı olduğu kullanıcıyı belirten ID.
+  type               String  // Hesap türü (örneğin, Google, Facebook gibi).
+  provider           String  // Hesap sağlayıcısı (örneğin, Google).
+  providerAccountId  String  @map("provider_account_id")  // Sağlayıcı hesabının ID'si.
+  refresh_token      String? @db.Text  // (Opsiyonel) Refresh token, daha sonra erişim token'ı almak için kullanılır.
+  access_token       String? @db.Text  // (Opsiyonel) Erişim token'ı, kullanıcının kimliğini doğrulamak için kullanılır.
+  expires_at         Int?  // (Opsiyonel) Token'ın sona erme zamanı.
+  token_type         String?  // (Opsiyonel) Token türü (örneğin, Bearer).
+  scope              String?  // (Opsiyonel) Hesap için izin verilen kapsam.
+  id_token           String? @db.Text  // (Opsiyonel) Kimlik token'ı, kullanıcıyı doğrulamak için kullanılır.
+  session_state      String?  // (Opsiyonel) Oturum durumu.
  
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
-  @@unique([provider, providerAccountId])
-  @@map("accounts")
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)  // Account, User modeline bağlanır ve kullanıcı silindiğinde ilgili hesap da silinir.
+
+  @@unique([provider, providerAccountId])  // Her sağlayıcı ve sağlayıcı hesabı çifti için benzersiz olmasını zorunlu kılar.
+  @@map("accounts")  // Veritabanında "accounts" tablosuyla eşleşir.
 }
- 
+
+// Session modeli, kullanıcının oturum bilgilerini tutar.
 model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique @map("session_token")
-  userId       String   @map("user_id")
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
- 
-  @@map("sessions")
+  id           String   @id @default(cuid())  // Her oturum için benzersiz bir ID oluşturulur.
+  sessionToken String   @unique @map("session_token")  // Oturum token'ı benzersizdir.
+  userId       String   @map("user_id")  // Oturumun bağlı olduğu kullanıcıyı belirten ID.
+  expires      DateTime  // Oturumun sona erme tarihi.
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)  // Session, User modeline bağlanır ve kullanıcı silindiğinde ilgili oturum da silinir.
+
+  @@map("sessions")  // Veritabanında "sessions" tablosuyla eşleşir.
 }
- 
+
+// User modeli, uygulamadaki kullanıcı bilgilerini tutar.
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
- 
-  @@map("users")
+  id            String    @id @default(cuid())  // Her kullanıcı için benzersiz bir ID oluşturulur.
+  name          String?   // Kullanıcı adı (opsiyonel).
+  email         String?   @unique  // Kullanıcı e-posta adresi (benzersiz olmalıdır).
+  emailVerified DateTime? @map("email_verified")  // E-posta doğrulama tarihi (opsiyonel).
+  image         String?   // Kullanıcı profil fotoğrafı URL'si (opsiyonel).
+  accounts      Account[]  // Kullanıcının bağlı olduğu hesaplar.
+  sessions      Session[]  // Kullanıcının oturumları.
+
+  groups Group[]    @relation("groupstousers")
+  @@map("users")  // Veritabanında "users" tablosuyla eşleşir.
 }
- 
+
+// VerificationToken modeli, e-posta doğrulama için kullanılan token'ları tutar.
 model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
- 
-  @@unique([identifier, token])
-  @@map("verification_tokens")
+  identifier String  // Kullanıcıya ait benzersiz bir kimlik (e-posta gibi).
+  token      String  // Doğrulama için kullanılan token.
+  expires    DateTime  // Token'ın geçerlilik süresi.
+
+  @@unique([identifier, token])  // Her token için benzersiz olmasını zorunlu kılar.
+  @@map("verification_tokens")  // Veritabanında "verification_tokens" tablosuyla eşleşir.
+}
+
+model Group {
+  id String @id @default(uuid())
+  adminId String
+  groupName String
+  description String
+  groupUsers User[] @relation("groupstousers")
 }

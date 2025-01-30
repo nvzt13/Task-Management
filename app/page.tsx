@@ -1,11 +1,9 @@
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
-import Image from "next/image";
 import Link from "next/link";
 
 export default async function Home() {
   const session = await auth();
-  if (session?.user) {
+  if (!session?.user) {
     return (
       <>
         giriş yok
@@ -13,7 +11,15 @@ export default async function Home() {
       </>
     );
   }
-  return <div>
-    {session?.user?.name}
-  </div>;
+  return (
+    <div>
+      <Link
+        href={"/groups"}
+        className="p-2 rounded-lg border text-white text-bold bg-black hover:bg-gray-500"
+      >
+        {" "}
+        Groups{" "}
+      </Link>
+    </div>
+  );
 }
