@@ -1,3 +1,4 @@
+import { Group } from "@prisma/client";
 import { createGroupSchema } from "../components/shared/groups/AddGroupDialog";
 import { User } from "next-auth";
 import { Dispatch, SetStateAction } from "react";
@@ -15,3 +16,14 @@ export interface AddGroupDialogProps {
 
 // createGroupType'ı sonra çıkarın
 export interface CreateGroupType extends z.infer<typeof createGroupSchema> {}
+
+export interface GroupHeaderProps {
+    group: Group;
+    isAdmin: boolean;
+}
+
+export interface GroupUsersListProps {
+    groupUsers: User[];
+    currentUserId: string;
+    currentGroupId: string
+}
