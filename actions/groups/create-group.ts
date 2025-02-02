@@ -1,35 +1,35 @@
-"use server"
+"use server";
 
-import { CreateGroupType } from '../type/types'
-import prisma from '../lib/prisma'
-import { auth } from '../auth'
+import { CreateGroupType } from "../../type/types";
+import prisma from "../../lib/prisma";
+import { auth } from "../../auth";
 
 export const createGroupDb = async (group: CreateGroupType) => {
   try {
-    const session = await auth()
-    
+    const session = await auth();
+
     // Session kontrolü
     if (!session || !session.user?.id) {
       return {
         success: false,
         status: 401,
-        message: "Unauthorized"
-      }
+        message: "Unauthorized",
+      };
     }
 
     // Kullanıcıyı bulma
     const currentUser = await prisma.user.findUnique({
       where: {
-        id: session.user.id
-      }
-    })
+        id: session.user.id,
+      },
+    });
 
     if (!currentUser) {
       return {
         success: false,
         status: 401,
-        message: "Unauthorized"
-      }
+        message: "Unauthorized",
+      };
     }
 
     // Grup oluşturma
@@ -40,24 +40,23 @@ export const createGroupDb = async (group: CreateGroupType) => {
         adminId: currentUser.id,
         groupUsers: {
           connect: {
-            id: session.user.id // Grup kullanıcısını bağlama
-          }
-        }
-      }
-    })
+            id: session.user.id, // Grup kullanıcısını bağlama
+          },
+        },
+      },
+    });
 
     return {
       success: true,
       status: 200,
       message: "Group created successfully",
-      group: createdGroup
-    }
-
+      group: createdGroup,
+    };
   } catch (error) {
     return {
       success: false,
       status: 500,
-      message: "Server Error"
-    }
+      message: "Server Error",
+    };
   }
-}
+};

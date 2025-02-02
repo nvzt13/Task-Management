@@ -49,7 +49,9 @@ model User {
   image         String?   // Kullanıcı profil fotoğrafı URL'si (opsiyonel).
   accounts      Account[]  // Kullanıcının bağlı olduğu hesaplar.
   sessions      Session[]  // Kullanıcının oturumları.
-
+  sendNotification Notification[] @relation("notification-send-by-to-user")
+  receivendNotification Notification[] @relation("notification-sendto-to-user")
+  task   Task[]
   groups Group[]    @relation("groupstousers")
   @@map("users")  // Veritabanında "users" tablosuyla eşleşir.
 }
@@ -70,4 +72,31 @@ model Group {
   groupName String
   description String
   groupUsers User[] @relation("groupstousers")
+  tasks Task[]
+}
+
+model Task {
+  id      String  @id @default(uuid())
+
+  title String
+  isCompleted Boolean @default(false)  
+  
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  groupId String
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id          String      @id @default(uuid())
+
+  isSeen      Boolean @default(false)
+  message     String
+  sendById      String
+  sendToId      String
+
+
+  sendBy   User     @relation(fields: [sendById], references: [id], "notification-send-by-to-user")
+  sendTo   User     @relation(fields: [sendToId], references: [id], "notification-sendto-to-user")
 }

@@ -6,19 +6,26 @@ export default async function Home() {
   if (!session?.user) {
     return (
       <>
-        giriş yok
-        <Link href={"/api/auth/signin"}>sign in</Link>
+        Home 
+        <Link href={"/api/auth/signin"}>Sign In</Link>
       </>
     );
   }
+
   return (
     <div>
+      Home
       <Link
         href={"/groups"}
         className="p-2 rounded-lg border text-white text-bold bg-black hover:bg-gray-500"
       >
-        {" "}
-        Groups{" "}
+        Groups
+      </Link>
+      <Link
+        href={"/api/auth/signout"}
+        className="p-2 ml-4 rounded-lg border text-white text-bold bg-red-500 hover:bg-red-700"
+      >
+        Sign Out
       </Link>
     </div>
   );

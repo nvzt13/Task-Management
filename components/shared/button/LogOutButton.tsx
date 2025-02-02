@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import { Button } from "../../ui/button";
 import { signOut } from "next-auth/react";
@@ -7,15 +6,17 @@ import { Loader2Icon } from "lucide-react";
 
 const LogOutButton = () => {
   const [loading, setLoading] = useState(false);
+  
   const handleSignOut = () => {
-    signOut();
     setLoading(true);
+    signOut({ callbackUrl: '/' }); // Çıkış yaptıktan sonra login sayfasına yönlendir
   };
+  
   return (
     <Button
       onClick={handleSignOut}
       className={cn({
-        "opacity-40 pointer-enents-none": loading,
+        "opacity-40 pointer-events-none": loading,
         "flex items-center justify-center gap-4": true,
       })}
     >

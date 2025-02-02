@@ -25,3 +25,8 @@
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
+
+
+/*
+google girş yapılabilen bir nextjs, authjs  appi geliştiriyorum. ancak http://localhost:3000/api/auth/signin sayfasından sonra direkt olarak önceden giriş yaptıgım hesap ile uygukama giriş oluyor. ben başka bir hesap ile denemek istiyorum ancak hesap secme sayfasına gidemiyorum
+*/

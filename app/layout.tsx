@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <SessionProvider>
           <Header />
-          <div className="flex w-full h-screen flex-grow bg-slate-200">
+          <div className="flex w-full h-screen flex-grow bg-white-900">
             {children}
           </div>
           <Toaster />
