@@ -7,7 +7,8 @@ import { auth } from "../../auth";
 export const createTaskDb = async (
   task: CreateTaskType,
   groupId: string,
-  userId: string
+  userId: string,
+  isHimself: boolean
 ) => {
   try {
     const session = await auth();
@@ -32,7 +33,7 @@ export const createTaskDb = async (
       return {
         success: false,
         status: 401,
-        message: "Unauthorized",
+        message: "This is not your task.",
       };
     }
 
@@ -51,7 +52,7 @@ export const createTaskDb = async (
     }
 
     // Admin kontrolü
-    if (group.adminId !== session.user.id) {
+    if (group.adminId !== session.user.id && !isHimself ) {
       return {
         success: false,
         status: 403,

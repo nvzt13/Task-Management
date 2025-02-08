@@ -30,7 +30,7 @@ import { auth } from '@/auth'
   
     return (
       <div>
-        <TasksClient tasks={tasks} isAdmin={group.adminId === session.user.id} groupId={params.groupId} userId={params.userId} isHimsef={session.user.id === params.userId} />
+        <TasksClient tasks={tasks} isAdmin={group.adminId === session.user.id} groupId={params.groupId} userId={params.userId} isHimself={session.user.id === params.userId} />
       </div>
     );
   };

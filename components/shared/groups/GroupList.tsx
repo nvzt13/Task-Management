@@ -8,7 +8,6 @@ import { Loader2Icon, PlusIcon } from "lucide-react";
 import { AddGroupDialog } from "./AddGroupDialog";
 import { fetchGroups } from "../../../actions/groups/fetch-groups";
 import { toast } from "sonner";
-import { CreateGroupType } from "@/type/types";
 import { Group } from "@prisma/client";
 
 const GroupList = () => {
@@ -47,9 +46,9 @@ const GroupList = () => {
     <div className="border-r-4 h-full">
       <AddGroupDialog open={openDialog} onOpenChange={setOpenDialog} />
       <div className="flex w-full items-center justify-between p-2 border-b">
-        <div className="text-lg font-semibold">Groups</div>
+        <Link href="/groups" className="text-lg font-semibold">Your Groups</Link>
         <Button onClick={() => setOpenDialog(true)}>
-          {" "}
+          Create Group
           <PlusIcon />
         </Button>
       </div>
@@ -62,13 +61,11 @@ const GroupList = () => {
               className={cn({
                 "flex flex-col w-full p-2 border-b cursor-pointer transition hover:bg-gray-500 hover:text-white":
                   true,
-                "bg-gray-900 text-white hover:bg-red-100 rounded":
+                "bg-gray-900 text-white hover:bg-gray-700 rounded":
                   pathName.startsWith(`/groups/${group.id}`),
               })}
             >
               <p className="text-lg font-semibold"> {group.groupName} </p>
-              <p> {group.description} </p>
-             
             </Link>
              {loading && <Loader2Icon className="animate-spin nevzat atalay" />}
           </div>

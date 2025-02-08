@@ -23,15 +23,16 @@ import { Loader } from "lucide-react";
 export const createGroupSchema = z.object({
   groupName: z
     .string()
-    .min(3, "Group Name should be at least 3 characters long"),
+    .min(3, "Group Name should be at least 3 characters long")
+    .nonempty("Group Name is required"), // Bu satır eklendi
   description: z
     .string()
-    .min(3, "Description should be at least 3 characters long"),
+    .min(3, "Description should be at least 3 characters long")
+    .nonempty("Description is required"), // Bu satır eklendi
 });
 
 // AddGroupDialog component
 export function AddGroupDialog({ open, onOpenChange }: AddGroupDialogProps) {
-  // olusacak group değişkenlerini tut
   const [createGroup, setCreateGroup] = useState<CreateGroupType>({
     groupName: "",
     description: "",
@@ -43,10 +44,10 @@ export function AddGroupDialog({ open, onOpenChange }: AddGroupDialogProps) {
       setLoading(true);
 
       // Validasyon işlemi
-      const validation = createGroupSchema.parse(createGroup);
+      createGroupSchema.parse(createGroup); // Burada doğrulama işlemi yapılır.
 
       // Grup oluşturma işlemi
-      const resp = await createGroupDb(validation);
+      const resp = await createGroupDb(createGroup);
 
       if (resp.success) {
         toast(resp.message);
@@ -55,11 +56,12 @@ export function AddGroupDialog({ open, onOpenChange }: AddGroupDialogProps) {
           resp.message || "An error occurred while creating the group"
         );
       }
+      location.reload();
     } catch (error) {
       // Zod validation error handling
       if (error instanceof z.ZodError) {
         error.errors.forEach((err) => {
-          toast.error(err.message);
+          toast.error(err.message); // Validation hatalarını toast ile göster
         });
       } else {
         toast("An unexpected error occurred. Please try again later.");
@@ -67,7 +69,6 @@ export function AddGroupDialog({ open, onOpenChange }: AddGroupDialogProps) {
     } finally {
       setLoading(false);
       onOpenChange(false);
-      location.reload();
     }
   };
 
@@ -120,7 +121,7 @@ export function AddGroupDialog({ open, onOpenChange }: AddGroupDialogProps) {
               "pointer-events-none opacity-40": loading,
             })}
           >
-            save
+            Save
             <span>
               {loading && <Loader className="animate-spin" />}
             </span>

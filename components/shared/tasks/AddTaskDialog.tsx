@@ -21,12 +21,14 @@ export function AddTaskDialog({
   userId,
   groupId,
   refreshTasks,
+  isHimself
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   userId: string;
   groupId: string;
   refreshTasks: (newTask: Task) => void; // Yeni görev ekledikçe tasks güncelleme fonksiyonu
+  isHimself: boolean
 }) {
   const [createTask, setCreateTask] = useState({ taskName: "" });
   const [loading, setLoading] = useState(false);
@@ -37,7 +39,7 @@ export function AddTaskDialog({
       const validation = createTaskSchema.parse(createTask);
   
       // createTask objesinin eksiksiz olup olmadığını kontrol et
-      const resp = await createTaskDb(validation, groupId, userId);
+      const resp = await createTaskDb(validation, groupId, userId, isHimself);
   
       if (resp.success) {
         toast(resp.message);

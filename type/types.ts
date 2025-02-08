@@ -1,4 +1,3 @@
-import { group } from 'console';
 import { Group } from "@prisma/client";
 import { createGroupSchema } from "../components/shared/groups/AddGroupDialog";
 import { createTaskSchema } from "../components/shared/tasks/AddTaskDialog";
@@ -20,7 +19,19 @@ export interface AddTaskDialogProps {
     groupId: string
     userId: string
 }
+export interface AddUserToGroupProps {
+    open: boolean;
+    onOpenChange: Dispatch<SetStateAction<boolean>>;
+    groupId: string;
+    adminId: string
+}
 
+export interface DeleteUserFromGroupProps {
+    open: boolean;
+    onOpenChange: Dispatch<SetStateAction<boolean>>;
+    groupId: string;
+    adminId: string
+}
 
 // createGroupType'ı sonra çıkarın
 export interface CreateGroupType extends z.infer<typeof createGroupSchema> {}
@@ -36,4 +47,6 @@ export interface GroupUsersListProps {
     currentUserId: string;
     currentGroupId: string
     isAdmin : boolean
+    adminId: string
 }
+

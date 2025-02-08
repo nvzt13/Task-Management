@@ -14,13 +14,13 @@ const TasksClient = ({
   isAdmin,
   userId,
   groupId,
-  isHimsef,
+  isHimself, // Kullanıcı kendi profiline bakıyor mu kontrolü
 }: {
   tasks: Task[];
   isAdmin: boolean;
   userId: string;
   groupId: string;
-  isHimsef: boolean;
+  isHimself: boolean;
 }) => {
   const [addTaskDialogOpen, setAddTaskDialogOpen] = useState(false);
   const [displayTasks, setDisplayTasks] = useState<Task[]>(tasks);
@@ -40,10 +40,10 @@ const TasksClient = ({
       setDisplayTasks((prevTasks) =>
         prevTasks.map((t) => (t.id === task.id ? updatedTask : t))
       );
-      toast("Task updated succusfully!")
+      toast("Task updated successfully!");
     } else {
       // Hata durumunda, loading state'ini sıfırla
-      alert(response.message);
+      toast(response.message);
     }
 
     setCurrentLoadingTaskId(""); // Loading state'i sıfırla
@@ -62,13 +62,14 @@ const TasksClient = ({
         groupId={groupId}
         onOpenChange={setAddTaskDialogOpen}
         refreshTasks={refreshTasks} // Yeni görev ekleme sonrası güncelleme
+        isHimself={isHimself}
       />
 
-      {isAdmin && (
+      {(isAdmin || isHimself) && (
         <div className="flex items-center justify-end">
           <Button
             onClick={() => setAddTaskDialogOpen(true)}
-            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white transition-transform transform hover:scale-105 shadow-md"
+            className="flex items-center gap-2 bg-gray-800 hover:bg-gray-600 text-white transition-transform transform hover:scale-105 shadow-md"
           >
             <PlusIcon className="w-5 h-5" />
             Add Task
@@ -79,7 +80,7 @@ const TasksClient = ({
       <div className="space-y-4">
         {displayTasks.length === 0 ? (
           <div className="text-center text-gray-500 italic">
-            No tasks found. Start by adding a new task!
+            No tasks found!
           </div>
         ) : (
           displayTasks.map((task) => (

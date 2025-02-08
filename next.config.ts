@@ -1,6 +1,17 @@
 // next.config.js
 module.exports = {
   images: {
-    domains: ['lh3.googleusercontent.com'], // Add this line
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'ih1.redbubble.net',
+        pathname: '/**', // Belirtilen tüm alt yollar için
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        pathname: '/**',
+      },
+    ],
   },
-}
+};

@@ -38,13 +38,15 @@ export const createGroupDb = async (group: CreateGroupType) => {
         groupName: group.groupName,
         description: group.description,
         adminId: currentUser.id,
+        adminName: session.user.name ?? "Unknown", // Eğer name null ise "Unknown" olarak ayarlanır
         groupUsers: {
           connect: {
-            id: session.user.id, // Grup kullanıcısını bağlama
+            id: session.user.id,
           },
         },
       },
     });
+    
 
     return {
       success: true,

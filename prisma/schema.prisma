@@ -42,19 +42,20 @@ model Session {
 
 // User modeli, uygulamadaki kullanıcı bilgilerini tutar.
 model User {
-  id            String    @id @default(cuid())  // Her kullanıcı için benzersiz bir ID oluşturulur.
-  name          String?   // Kullanıcı adı (opsiyonel).
-  email         String?   @unique  // Kullanıcı e-posta adresi (benzersiz olmalıdır).
-  emailVerified DateTime? @map("email_verified")  // E-posta doğrulama tarihi (opsiyonel).
-  image         String?   // Kullanıcı profil fotoğrafı URL'si (opsiyonel).
-  accounts      Account[]  // Kullanıcının bağlı olduğu hesaplar.
-  sessions      Session[]  // Kullanıcının oturumları.
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
   sendNotification Notification[] @relation("notification-send-by-to-user")
   receivendNotification Notification[] @relation("notification-sendto-to-user")
   task   Task[]
   groups Group[]    @relation("groupstousers")
-  @@map("users")  // Veritabanında "users" tablosuyla eşleşir.
+  @@map("users")
 }
+
 
 // VerificationToken modeli, e-posta doğrulama için kullanılan token'ları tutar.
 model VerificationToken {
@@ -67,13 +68,16 @@ model VerificationToken {
 }
 
 model Group {
-  id String @id @default(uuid())
-  adminId String
-  groupName String
+  id          String   @id @default(uuid())
+  adminId     String
+  adminName   String
+  groupName   String
   description String
-  groupUsers User[] @relation("groupstousers")
-  tasks Task[]
+  groupUsers  User[]   @relation("groupstousers")
+  tasks       Task[]
+  notifications Notification[]
 }
+
 
 model Task {
   id      String  @id @default(uuid())
@@ -95,7 +99,8 @@ model Notification {
   message     String
   sendById      String
   sendToId      String
-
+  groupId String
+  group Group @relation(fields: [groupId], references: [id])
 
   sendBy   User     @relation(fields: [sendById], references: [id], "notification-send-by-to-user")
   sendTo   User     @relation(fields: [sendToId], references: [id], "notification-sendto-to-user")

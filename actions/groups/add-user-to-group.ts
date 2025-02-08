@@ -2,11 +2,11 @@
 import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 
-export const addUserToGroup = async (groupId: string, email: string) => {
+export const addUserToGroup = async (groupId: string, userId: string, message: string) => {
   try {
     const session = await auth();
 
-    if (!email) {
+    if (!userId) {
       return {
         success: false,
         status: 400,
@@ -49,7 +49,7 @@ export const addUserToGroup = async (groupId: string, email: string) => {
 
     const requestedUser = await prisma.user.findFirst({
       where: {
-        email,
+        id:userId,
       },
     });
 
@@ -61,7 +61,7 @@ export const addUserToGroup = async (groupId: string, email: string) => {
       };
     }
 
-    const isUserAlreadyInGroup = currentGroup.groupUsers.some((user) => user.email === email);
+    const isUserAlreadyInGroup = currentGroup.groupUsers.some((user) => user.id === userId);
 
     if (isUserAlreadyInGroup) {
       return {
@@ -75,34 +75,36 @@ export const addUserToGroup = async (groupId: string, email: string) => {
       where: {
         sendById: session.user.id,
         sendToId: requestedUser.id,
-        isSeen: false,
-        message: `Do you want to join ${currentGroup.groupName}`,
+        groupId: groupId,
+        isSeen: false,  // Görülmemiş bir mesaj varsa kontrol eder
       },
     });
-
+    
     if (existingNotification) {
       return {
         success: false,
-        status: 409, // 409 Conflict (Uygun bir status code)
-        message: "Notification already sent!",
+        status: 409, // 409 Conflict
+        message: "Notification already sent and not seen yet!",
       };
     }
-
+    
+    // Eğer görüldüyse veya yeni bir mesaj göndermek istiyorsanız
     await prisma.notification.create({
       data: {
         sendById: session.user.id,
-        sendToId: requestedUser.id, // Burada sendToId yanlış gönderiliyordu, düzelttim
-        message: `Do you want to join ${currentGroup.groupName}`,
+        sendToId: requestedUser.id,
+        message: message,
+        groupId
       },
     });
+    
 
     return {
       success: true,
       status: 200,
-      message: `Join request sent to ${email}`,
+      message: `Message send to ${userId}`,
     };
   } catch (error) {
-    console.error('Error adding user to group:', error);
     return {
       success: false,
       status: 500,
