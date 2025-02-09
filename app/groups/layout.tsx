@@ -11,7 +11,7 @@ const GroupLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <div className="w-full h-screen grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-8 lg:grid-cols-12 p-4 mb-36">
       {/* Groups Section */}
-      <div className="col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-3 p-4 bg-gray-50 rounded-lg shadow-md">
+      <div className="col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-3 p-4 bg-gray-50 rounded-lg shadow-md h-auto">
         <GroupList />
       </div>
 

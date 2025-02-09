@@ -34,10 +34,6 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ user }) => {
       <DropdownMenuContent className="w-64">
         <DropdownMenuLabel> {user.name} </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex items-center justify-between">
-          <PersonStandingIcon />
-          <Link href={"/profile"}> Profile</Link>
-        </DropdownMenuItem>
         <DropdownMenuItem className="flex items-center justify-between text-destructive cursor-pointer">
           <LogInIcon />
           <LogOutButton />

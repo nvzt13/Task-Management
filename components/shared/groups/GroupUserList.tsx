@@ -17,13 +17,13 @@ const GroupUserList: React.FC<GroupUsersListProps> = ({
   const sortedUsers = [...groupUsers].sort((a, b) => (a.id === adminId ? -1 : b.id === adminId ? 1 : 0));
 
   return (
-    <div className="w-full">
+    <div className="">
       {sortedUsers.map((user) => (
         <Link
           href={`/groups/${currentGroupId}/${user.id}`}
           key={user.id}
           className={cn({
-            "w-full p-3 flex gap-4 rounded border-b transition-colors flex items-center": true,
+            " flex rounded border-b transition-colors flex items-center": true,
             "bg-gray-800 text-white": pathName.endsWith(`${user.id}`),
             "bg-gradient-to-r from-yellow-100 to-yellow-50": adminId === user.id, // Admin arka planı
           })}

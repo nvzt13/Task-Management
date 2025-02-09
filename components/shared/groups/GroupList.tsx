@@ -43,12 +43,11 @@ const GroupList = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="border-r-4 h-full">
+    <div>
       <AddGroupDialog open={openDialog} onOpenChange={setOpenDialog} />
       <div className="flex w-full items-center justify-between p-2 border-b">
         <Link href="/groups" className="text-lg font-semibold">Your Groups</Link>
         <Button onClick={() => setOpenDialog(true)}>
-          Create Group
           <PlusIcon />
         </Button>
       </div>
