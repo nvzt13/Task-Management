@@ -1,4 +1,3 @@
-import GroupList from "@/components/shared/groups/GroupList";
 import React, { ReactNode } from "react";
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
@@ -15,6 +14,7 @@ const GroupLayout = async ({
 }) => {
   const session = await auth();
 
+  const selectedGroupId = params.groupId
   if (!session || !session.user?.id) {
     return (
       <div className="flex items-center justify-center h-full text-lg text-red-500">
@@ -25,7 +25,7 @@ const GroupLayout = async ({
 
   const group = await prisma.group.findFirst({
     where: {
-      id: params.groupId,
+      id: selectedGroupId,
       groupUsers: {
         some: {
           id: session.user.id,
@@ -40,23 +40,22 @@ const GroupLayout = async ({
   if (!group) {
     return (
       <div className="flex items-center justify-center h-full text-lg text-red-500">
-        Group not found or you don't have select a group.
+        Group not found or you do not have select a group.
       </div>
     );
   }
 
   return (
     <div className="w-full h-full p-4 space-y-6">
-      <GroupHeader
-        group={group}
-        isAdmin={group.adminId === session.user.id}
-      />
+      <GroupHeader group={group} isAdmin={group.adminId === session.user.id} />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-7 lg:grid-cols-9 divide-x-2 space-x-4">
         {/* User List */}
         <div className="md:col-span-2 lg:col-span-2 max-sm:absolute max-sm:bottom-0">
           <div className="p-4 border rounded-lg bg-gray-50 shadow-md">
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Group Users</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              Group Users
+            </h3>
             {group.groupUsers.length > 0 ? (
               <GroupUserList
                 groupUsers={group.groupUsers}

@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import GroupList from "@/components/shared/groups/GroupList";
-import AllUsers from "@/components/shared/users/AllUsers";
 import React, { ReactNode } from "react";
 
 const GroupLayout = async ({ children }: { children: ReactNode }) => {

@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Loader, Settings2Icon, SettingsIcon, Trash2Icon, UserPlusIcon, UserXIcon } from "lucide-react";
+import { Loader, SettingsIcon, Trash2Icon, UserPlusIcon, UserXIcon } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import AddUserToGroup from "./AddUserToGroup";

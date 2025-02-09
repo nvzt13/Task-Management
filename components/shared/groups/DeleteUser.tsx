@@ -1,8 +1,7 @@
 "use client";
-import { addUserToGroup } from "@/actions/groups/add-user-to-group";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Trash2Icon, Loader } from "lucide-react";
+import { Loader } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { fetchUsers } from "@/actions/users/fetch-users";
@@ -10,16 +9,14 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { DeleteUserFromGroupProps } from "@/type/types";
 import { User } from "@prisma/client";
 import { removeUser } from "@/actions/users/remove-user-from-group";
+import { DialogProps } from "@/type/types";
 
-const DeleteUserFromGroup = ({ groupId, open, onOpenChange,adminId }: DeleteUserFromGroupProps) => {
+const DeleteUserFromGroup = ({ groupId, open, onOpenChange,adminId }: DialogProps) => {
     const [loading, setLoading] = useState(false);
     const [selectedUserId, setSelectedUserId] = useState<string | null>(null); // Seçilen kullanıcının email'ini tutmak için state
     const [users, setUsers] = useState<User[]>([]); // Kullanıcıları tutmak için state
@@ -33,14 +30,14 @@ const DeleteUserFromGroup = ({ groupId, open, onOpenChange,adminId }: DeleteUser
           // Directly using the 'users' property from the response
           setUsers(response?.users || []); // If response?.users is undefined, use an empty array
         } catch (error) {
-          toast.error("Failed to fetch users");
+          toast.error(`${error}`);
         }
       };
       loadUsers();
     }, [groupId]); // groupId changes trigger fetching users again
   
     const handleRemoveUserFromGroup = async () => {
-      if(!selectedUserId) return;
+      if(!selectedUserId || !groupId ) return;
       if(users.length <= 1) {
         toast("You dont have user for deleted!")
       }

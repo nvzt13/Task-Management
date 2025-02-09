@@ -8,7 +8,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { createTaskDb } from "@/actions/task/add-task";
-import { CircleIcon, Loader } from "lucide-react";
+import {  Loader } from "lucide-react";
 import { Task } from "@prisma/client";
 
 export const createTaskSchema = z.object({

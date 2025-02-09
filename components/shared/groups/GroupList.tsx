@@ -28,8 +28,8 @@ const GroupList = () => {
           setError(resp?.message || "Failed to fetch groups"); // Set error message
           toast.error(resp?.message || "Failed to fetch groups"); // Display toast error message
         }
-      } catch (e: any) {
-        setError("Error fetching groups");
+      } catch (e) {
+        setError(`Error fetching groups ${e}`);
         toast.error("Error fetching groups");
       } finally {
         setLoading(false); // Stop loading when the fetch is done

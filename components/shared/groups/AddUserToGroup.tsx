@@ -13,16 +13,16 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { User } from "@prisma/client";
-import { AddUserToGroupProps } from "@/type/types";
 import { fetchUsers } from "@/actions/users/fetch-users";
 import { Loader2 } from "lucide-react";
+import { DialogProps } from "@/type/types";
 
 const AddUserToGroup = ({
   groupId,
   open,
   onOpenChange,
   adminId
-}: AddUserToGroupProps) => {
+}: DialogProps) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("Do you want to join us?");
   const [selectedUserId,setSelectedUserId] = useState<string | null>(
@@ -35,7 +35,7 @@ const AddUserToGroup = ({
         const response = await fetchUsers();
         setUsers(response.users || []); // Kullanıcıları state'e ekle
       } catch (error) {
-        toast.error("Failed to fetch users");
+        toast.error(`${error}`);
       }
     };
     loadUsers();
@@ -49,6 +49,10 @@ const AddUserToGroup = ({
 
     if (!selectedUserId) {
       toast.error("Please select a user!");
+      return;
+    }
+    if (!groupId) {
+      toast.error("Please select a group!");
       return;
     }
 

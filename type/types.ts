@@ -9,28 +9,12 @@ export interface UserAvatarProps {
     user: User;
 }
 
-export interface AddGroupDialogProps {
+export interface DialogProps {
     open: boolean;
     onOpenChange: Dispatch<SetStateAction<boolean>>;
-}
-export interface AddTaskDialogProps {
-    open: boolean;
-    onOpenChange: Dispatch<SetStateAction<boolean>>;
-    groupId: string
-    userId: string
-}
-export interface AddUserToGroupProps {
-    open: boolean;
-    onOpenChange: Dispatch<SetStateAction<boolean>>;
-    groupId: string;
-    adminId: string
-}
-
-export interface DeleteUserFromGroupProps {
-    open: boolean;
-    onOpenChange: Dispatch<SetStateAction<boolean>>;
-    groupId: string;
-    adminId: string
+    groupId?: string
+    userId?: string
+    adminId?: string
 }
 
 // createGroupType'ı sonra çıkarın
@@ -46,7 +30,6 @@ export interface GroupUsersListProps {
     groupUsers: User[];
     currentUserId: string;
     currentGroupId: string
-    isAdmin : boolean
     adminId: string
 }
 

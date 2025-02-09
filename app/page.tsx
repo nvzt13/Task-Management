@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import Link from "next/link";
 import Image from "next/image";
-import AllUsers from "@/components/shared/users/AllUsers";
 
 export default async function Home() {
   const session = await auth();

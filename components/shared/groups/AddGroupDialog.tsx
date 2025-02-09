@@ -11,7 +11,7 @@ import {
 import { Input } from "../../../components/ui/input";
 import { Label } from "../../../components/ui/label";
 import { cn } from "../../../lib/utils";
-import { AddGroupDialogProps } from "../../../type/types";
+import {  DialogProps } from "../../../type/types";
 import { CreateGroupType } from "../../../type/types";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -32,7 +32,7 @@ export const createGroupSchema = z.object({
 });
 
 // AddGroupDialog component
-export function AddGroupDialog({ open, onOpenChange }: AddGroupDialogProps) {
+export function AddGroupDialog({ open, onOpenChange }: DialogProps) {
   const [createGroup, setCreateGroup] = useState<CreateGroupType>({
     groupName: "",
     description: "",
