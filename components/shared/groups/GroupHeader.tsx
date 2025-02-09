@@ -3,7 +3,7 @@ import { GroupSettings } from "./GroupSettings";
 
 const GroupHeader: React.FC<GroupHeaderProps> = ({ group, isAdmin }) => {
   return (
-    <header className="flex items-center justify-between border-b p-4 mb-4 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-50 shadow-md rounded-md transition-colors duration-300">
+    <header className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 via-gray-100 to-gray-50 shadow-md rounded-md transition-colors duration-300">
       {/* Grup Adı ve Açıklaması */}
       <div className="flex flex-col gap-2 md:gap-3 p-4 md:p-0">
         <p className="font-semibold text-xl md:text-2xl text-gray-900 transition-colors duration-300">

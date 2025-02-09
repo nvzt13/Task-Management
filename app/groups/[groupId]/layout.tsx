@@ -5,16 +5,22 @@ import GroupHeader from "@/components/shared/groups/GroupHeader";
 import GroupUserList from "@/components/shared/groups/GroupUserList";
 import { Loader } from "lucide-react"; // Loader eklenebilir
 
+interface Params {
+  groupId: string;
+}
+
 const GroupLayout = async ({
   children,
   params,
 }: {
   children: ReactNode;
-  params: { groupId: string };
+  params: Promise<Params>;
 }) => {
-  const session = await auth();
+  // params'ı await ile çözüyoruz
+  const resolvedParams = await params;
+  const selectedGroupId = resolvedParams.groupId;
 
-  const selectedGroupId = params.groupId;
+  const session = await auth();
   if (!session || !session.user?.id) {
     return (
       <div className="flex items-center justify-center h-full text-lg text-red-500">
@@ -46,19 +52,19 @@ const GroupLayout = async ({
   }
 
   return (
-    <div className="w-full p-4 space-y-6 grid grid-rows-2 gap-6">
-      {/* Group Header - First row */}
-      <div className="row-span-1">
+    <div className="w-full h-full p-4">
+      {/* Group Header */}
+      <div className="border-b-4  mb-4">
         <GroupHeader
           group={group}
           isAdmin={group.adminId === session.user.id}
         />
       </div>
 
-      {/* Group Users and Main Content - Second row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Group Users and Main Content */}
+      <div className="flex flex-col md:flex-row gap-6 divide-x divide-gray-300">
         {/* Group Users */}
-        <div className="col-span-1">
+        <div className="w-full md:w-1/3">
           <h3 className="text-xl font-semibold text-gray-800 mb-4">
             Group Users
           </h3>
@@ -66,20 +72,18 @@ const GroupLayout = async ({
             <GroupUserList
               groupUsers={group.groupUsers}
               currentUserId={session.user.id}
-              currentGroupId={params.groupId}
+              currentGroupId={selectedGroupId}
               adminId={group.adminId}
             />
           ) : (
             <div className="flex items-center justify-center text-gray-500">
-              <Loader className="animate-spin mr-2" /> Loading users...
+              <Loader className="animate-spin mr-2" />{" "}
             </div>
           )}
         </div>
 
         {/* Main Content (children) */}
-        <div className="col-span-2">
-          {children}
-        </div>
+        <div className="w-full md:w-2/3 p-4">{children}</div>
       </div>
     </div>
   );

@@ -18,44 +18,46 @@ const GroupUserList: React.FC<GroupUsersListProps> = ({
 
   return (
     <div className="">
-      {sortedUsers.map((user) => (
-        <Link
-          href={`/groups/${currentGroupId}/${user.id}`}
-          key={user.id}
-          className={cn({
-            " flex rounded border-b transition-colors flex items-center": true,
-            "bg-gray-800 text-white": pathName.endsWith(`${user.id}`),
-            "bg-gradient-to-r from-yellow-100 to-yellow-50": adminId === user.id, // Admin arka planı
-          })}
-        >
-          <Image
-            src={user.image as string}
-            alt="user image"
-            width={40}
-            height={40}
-            className="rounded-full"
-          />
-          <div className="flex flex-col w-full">
-            <div className="flex items-center">
-              <p
-                className={cn("font-semibold", {
-                  "text-yellow-600": adminId === user.id, // Admin metin rengi
-                })}
-              >
-                @{user.name ?? ""}
-              </p>
-              {adminId === user.id && (
-                <CrownIcon
-                  className="ml-2 text-yellow-500 animate-pulse" // Animasyonlu ikon
-                  aria-label="Admin"
-                  size={20} // İkon boyutu
-                />
-              )}
-            </div>
-          </div>
-        </Link>
-      ))}
-    </div>
+  {sortedUsers.map((user) => (
+    <Link
+      href={`/groups/${currentGroupId}/${user.id}`}
+      key={user.id}
+      className={cn({
+        "flex rounded border-b transition-colors items-center mb-2 p-2": true,
+        "bg-gray-800 text-white": pathName.endsWith(`${user.id}`),
+        "bg-gradient-to-r from-yellow-100 to-yellow-50": adminId === user.id, 
+
+            })}
+    >
+      <Image
+        src={user.image as string}
+        alt="user image"
+        width={40}
+        height={40}
+        className="rounded-full"
+      />
+      <div className="flex flex-col w-full">
+        <div className="flex items-center justify-between">
+          <p
+            className={cn("font-semibold overflow-hidden", {
+              "text-yellow-600": adminId === user.id, // Admin metin rengi
+            })}
+          >
+            @{user.name ?? ""}
+          </p>
+          {adminId === user.id && (
+            <CrownIcon
+              className="ml-2 text-yellow-500 animate-pulse" // Animasyonlu ikon
+              aria-label="Admin"
+              size={20} // İkon boyutu
+            />
+          )}
+        </div>
+      </div>
+    </Link>
+  ))}
+</div>
+
   );
 };
 
