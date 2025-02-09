@@ -9,8 +9,7 @@ import {
 } from "../../../components/ui/dropdown-menu";
 import { UserAvatarProps } from "../../../type/types";
 import Image from "next/image";
-import { LogInIcon, PersonStandingIcon } from "lucide-react";
-import Link from "next/link";
+import { LogInIcon } from "lucide-react";
 import LogOutButton from "../button/LogOutButton";
 
 const UserAvatar: React.FC<UserAvatarProps> = ({ user }) => {
@@ -34,6 +33,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({ user }) => {
       <DropdownMenuContent className="w-64">
         <DropdownMenuLabel> {user.name} </DropdownMenuLabel>
         <DropdownMenuSeparator />
+      
         <DropdownMenuItem className="flex items-center justify-between text-destructive cursor-pointer">
           <LogInIcon />
           <LogOutButton />
