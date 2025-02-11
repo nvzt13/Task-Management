@@ -6,7 +6,7 @@ First, run the development server:
 
 ```bash
 git clone https://github.com/nvzt13/Task-Management-App.git
-cd Countries-App
+cd Task-Management-App
 npm install
 npm run dev
 ```
